@@ -462,9 +462,9 @@ CREATE OR REPLACE TYPE BODY O_PLS_Unit IS
         
     BEGIN
     
-        SELF.Obj_Owner := UTL_CALL_STACK.OWNER(2);
+        SELF.Obj_Owner := UTL_CALL_STACK.OWNER(3);
         
-        SELF.Concat_Nm := UTL_CALL_STACK.CONCATENATE_SUBPROGRAM(UTL_CALL_STACK.SUBPROGRAM(2));
+        SELF.Concat_Nm := UTL_CALL_STACK.CONCATENATE_SUBPROGRAM(UTL_CALL_STACK.SUBPROGRAM(3));
         
         RETURN;
         
@@ -601,22 +601,9 @@ CREATE OR REPLACE TYPE O_PLS_Exec_Event UNDER O_PLS_Event (
 
     PLS_Unit O_PLS_Unit,
     
-    Edition_Nm VARCHAR2(30),
-    
-    Session_User VARCHAR2(30),
-    
-    OS_User VARCHAR2(30),
-    
-    Terminal VARCHAR2(30),
-    
-    Module VARCHAR2(30),
-    
-    Client_Id VARCHAR2(30),
-    
     Calling_Exec_Event_Id INTEGER,
     
     CONSTRUCTOR FUNCTION O_PLS_Exec_Event(
-      i_PLSUnit O_PLS_Unit,
       i_CallingExecEventId INTEGER := NULL,
       i_MinLoggingLevel INTEGER := 3
     ) RETURN SELF AS RESULT,
@@ -631,7 +618,6 @@ CREATE OR REPLACE TYPE BODY O_PLS_Exec_Event AS
 
 
     CONSTRUCTOR FUNCTION O_PLS_Exec_Event(
-      i_PLSUnit O_PLS_Unit,
       i_CallingExecEventId INTEGER := NULL,
       i_MinLoggingLevel INTEGER := 3
     ) RETURN SELF AS RESULT IS
@@ -639,19 +625,7 @@ CREATE OR REPLACE TYPE BODY O_PLS_Exec_Event AS
     
         SELF.Event_Type_Cd := Pkg_PLS_Event_Mgr.gc_ExecEventTypeCd;
         
-        SELF.PLS_Unit := i_PLSUnit;
-        
-        SELF.Edition_Nm := SYS_CONTEXT('USERENV', 'CURRENT_EDITION_NAME');
-        
-        SELF.Session_User := SYS_CONTEXT('USERENV', 'SESSION_USER');
-        
-        SELF.OS_User := SYS_CONTEXT('USERENV', 'OS_USER');
-        
-        SELF.Terminal := SYS_CONTEXT('USERENV', 'TERMINAL');
-        
-        SELF.Module := SYS_CONTEXT('USERENV', 'MODULE');
-        
-        SELF.Client_Id := SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER');
+        SELF.PLS_Unit := O_PLS_Unit();
         
         SELF.Calling_Exec_Event_Id := i_CallingExecEventId;
         
@@ -682,12 +656,12 @@ CREATE OR REPLACE TYPE BODY O_PLS_Exec_Event AS
           SELF.Id,
           SELF.PLS_Unit.Obj_Owner,
           SELF.PLS_Unit.Concat_Nm,
-          SELF.Edition_Nm,
-          SELF.Session_User,
-          SELF.OS_User,
-          SELF.Terminal,
-          SELF.Module,
-          SELF.Client_Id,
+          SYS_CONTEXT('USERENV', 'CURRENT_EDITION_NAME'),
+          SYS_CONTEXT('USERENV', 'SESSION_USER'),
+          SYS_CONTEXT('USERENV', 'OS_USER'),
+          SYS_CONTEXT('USERENV', 'TERMINAL'),
+          SYS_CONTEXT('USERENV', 'MODULE'),
+          SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),
           SELF.Calling_Exec_Event_Id
         );
         
