@@ -907,8 +907,6 @@ CREATE OR REPLACE PACKAGE BODY Pkg_PLS_Event_Access IS
     
     PROCEDURE Grant_Access(i_Owner VARCHAR2, i_DBUser VARCHAR2, i_Commit BOOLEAN) IS
     
-        l_PLSUnit O_PLS_Unit := O_PLS_Unit;
-        
         l_PLSExecEvent O_PLS_Exec_Event;
         
         l_PLSExceptEvent O_PLS_Except_Event;
@@ -920,7 +918,7 @@ CREATE OR REPLACE PACKAGE BODY Pkg_PLS_Event_Access IS
         PROCEDURE Log_PLS_Exec IS
         BEGIN
         
-            l_PLSExecEvent := O_PLS_Exec_Event(l_PLSUnit, i_MinLoggingLevel => 7);
+            l_PLSExecEvent := O_PLS_Exec_Event(i_MinLoggingLevel => 7);
             
             l_PLSExecEvent.Add_Var('i_Owner', ANYDATA.CONVERTVARCHAR2(i_Owner));
             
@@ -955,8 +953,6 @@ CREATE OR REPLACE PACKAGE BODY Pkg_PLS_Event_Access IS
     
     PROCEDURE Remove_Access(i_Owner VARCHAR2, i_DBUser VARCHAR2, i_Commit BOOLEAN := TRUE) IS
     
-        l_PLSUnit O_PLS_Unit := O_PLS_Unit;
-        
         l_PLSExecEvent O_PLS_Exec_Event;
         
         l_PLSExceptEvent O_PLS_Except_Event;
@@ -968,7 +964,7 @@ CREATE OR REPLACE PACKAGE BODY Pkg_PLS_Event_Access IS
         PROCEDURE Log_PLS_Exec IS
         BEGIN
         
-            l_PLSExecEvent := O_PLS_Exec_Event(l_PLSUnit, i_MinLoggingLevel => 7);
+            l_PLSExecEvent := O_PLS_Exec_Event(i_MinLoggingLevel => 7);
             
             l_PLSExecEvent.Add_Var('i_Owner', ANYDATA.CONVERTVARCHAR2(i_Owner));
             
