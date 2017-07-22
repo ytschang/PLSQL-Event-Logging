@@ -604,7 +604,7 @@ CREATE OR REPLACE TYPE O_PLS_Exec_Event UNDER O_PLS_Event (
     Calling_Exec_Event_Id INTEGER,
     
     CONSTRUCTOR FUNCTION O_PLS_Exec_Event(
-      i_CallingExecEventId INTEGER := NULL,
+      i_CallingExecEvent O_PLS_Exec_Event := NULL,
       i_MinLoggingLevel INTEGER := 3
     ) RETURN SELF AS RESULT,
     
@@ -618,7 +618,7 @@ CREATE OR REPLACE TYPE BODY O_PLS_Exec_Event AS
 
 
     CONSTRUCTOR FUNCTION O_PLS_Exec_Event(
-      i_CallingExecEventId INTEGER := NULL,
+      i_CallingExecEvent O_PLS_Exec_Event := NULL,
       i_MinLoggingLevel INTEGER := 3
     ) RETURN SELF AS RESULT IS
     BEGIN
@@ -627,7 +627,7 @@ CREATE OR REPLACE TYPE BODY O_PLS_Exec_Event AS
         
         SELF.PLS_Unit := O_PLS_Unit();
         
-        SELF.Calling_Exec_Event_Id := i_CallingExecEventId;
+        SELF.Calling_Exec_Event_Id := i_CallingExecEvent.Id;
         
         SELF.Init(i_MinLoggingLevel);
         
