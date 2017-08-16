@@ -103,7 +103,7 @@ CREATE TABLE A_PLS_Event_Types (
   TS TIMESTAMP NOT NULL,
   Session_User VARCHAR2(30) NOT NULL,
   OS_User VARCHAR2(30) NOT NULL,
-  Terminal VARCHAR2(30),
+  Host VARCHAR2(30),
   Module VARCHAR2(48),
   Client_Id VARCHAR2(30),
   PLS_Event_Type_Cd VARCHAR2(10) NOT NULL,
@@ -118,7 +118,7 @@ CREATE OR REPLACE TRIGGER TC_A_PLS_Event_Types FOR INSERT ON A_PLS_Event_Types C
       :NEW.TS := SYSTIMESTAMP;
       :NEW.Session_User := SYS_CONTEXT('USERENV', 'SESSION_USER');
       :NEW.OS_User := SYS_CONTEXT('USERENV', 'OS_USER');
-      :NEW.Terminal := SYS_CONTEXT('USERENV', 'TERMINAL');
+      :NEW.Host := SYS_CONTEXT('USERENV', 'HOST');
       :NEW.Module := SYS_CONTEXT('USERENV', 'MODULE');
       :NEW.Client_Id := SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER');
     END BEFORE EACH ROW;
@@ -173,7 +173,7 @@ CREATE TABLE PLS_Exec_Events (
   Edition_Nm VARCHAR2(30),
   Session_User VARCHAR2(30) NOT NULL,
   OS_User VARCHAR2(30) NOT NULL,
-  Terminal VARCHAR2(30) NOT NULL,
+  Host VARCHAR2(30) NOT NULL,
   Module VARCHAR2(30) NOT NULL,
   Client_Id VARCHAR2(30),
   Calling_PLS_Exec_Event_Id INTEGER,
@@ -244,7 +244,7 @@ SELECT
   Exe.Edition_Nm,
   Exe.Session_User,
   Exe.OS_User,
-  Exe.Terminal,
+  Exe.Host,
   Exe.Module,
   Exe.Client_Id
 FROM PLS_Events E
@@ -271,7 +271,7 @@ SELECT
   Exe.Edition_Nm,
   Exe.Session_User,
   Exe.OS_User,
-  Exe.Terminal,
+  Exe.Host,
   Exe.Module,
   Exe.Client_Id
 FROM PLS_Events E
@@ -353,7 +353,7 @@ CREATE TABLE A_PLS_Event_User_Access (
   TS TIMESTAMP NOT NULL,
   Session_User VARCHAR2(30) NOT NULL,
   OS_User VARCHAR2(30) NOT NULL,
-  Terminal VARCHAR2(30),
+  Host VARCHAR2(30),
   Module VARCHAR2(48),
   Client_Id VARCHAR2(30),
   Owner VARCHAR2(30) NOT NULL,
@@ -367,7 +367,7 @@ CREATE OR REPLACE TRIGGER TC_A_PLS_Event_User_Access FOR INSERT ON A_PLS_Event_U
       :NEW.TS := SYSTIMESTAMP;
       :NEW.Session_User := SYS_CONTEXT('USERENV', 'SESSION_USER');
       :NEW.OS_User := SYS_CONTEXT('USERENV', 'OS_USER');
-      :NEW.Terminal := SYS_CONTEXT('USERENV', 'TERMINAL');
+      :NEW.Host := SYS_CONTEXT('USERENV', 'HOST');
       :NEW.Module := SYS_CONTEXT('USERENV', 'MODULE');
       :NEW.Client_Id := SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER');
     END BEFORE EACH ROW;
@@ -648,7 +648,7 @@ CREATE OR REPLACE TYPE BODY O_PLS_Exec_Event AS
           Edition_Nm,
           Session_User,
           OS_User,
-          Terminal,
+          Host,
           Module,
           Client_Id,
           Calling_PLS_Exec_Event_Id
@@ -659,7 +659,7 @@ CREATE OR REPLACE TYPE BODY O_PLS_Exec_Event AS
           SYS_CONTEXT('USERENV', 'CURRENT_EDITION_NAME'),
           SYS_CONTEXT('USERENV', 'SESSION_USER'),
           SYS_CONTEXT('USERENV', 'OS_USER'),
-          SYS_CONTEXT('USERENV', 'TERMINAL'),
+          SYS_CONTEXT('USERENV', 'HOST'),
           SYS_CONTEXT('USERENV', 'MODULE'),
           SYS_CONTEXT('USERENV', 'CLIENT_IDENTIFIER'),
           SELF.Calling_Exec_Event_Id
